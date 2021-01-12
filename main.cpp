@@ -78,8 +78,11 @@ struct MyFirstStruct                                //4
 {
     T* compare(T* a, T* b) //5
     {
-        if( a->value < b->value ) return a;
-        if( a->value > b->value ) return b;
+        if(a != nullptr && b != nullptr)
+        {
+            if( a->value < b->value ) return a;
+            if( a->value > b->value ) return b;
+        }
         return nullptr;
     }
 };
@@ -89,17 +92,21 @@ struct U
     float myFloat1 { 8.0f }, myFloat2 { 6.0f };
     float floatMethod2(float* updatedValue)      //12
     {
-        std::cout << "U's myFloat1 value: " << this->myFloat1 << std::endl;
-        this->myFloat1 = *updatedValue;
-        std::cout << "U's myFloat1 updated value: " << this->myFloat1 << std::endl;
-        while( std::abs(this->myFloat2 - this->myFloat1) > 0.001f )
+        if(updatedValue != nullptr)
         {
-            /*
-             write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
-             */
-            this->myFloat2 -= 1.0f;
+            std::cout << "U's myFloat1 value: " << this->myFloat1 << std::endl;
+            this->myFloat1 = *updatedValue;
+            std::cout << "U's myFloat1 updated value: " << this->myFloat1 << std::endl;
+            while( std::abs(this->myFloat2 - this->myFloat1) > 0.001f )
+            {
+                /*
+                write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+                */
+                this->myFloat2 -= 1.0f;
+            }
+            std::cout << "U's myFloat2 updated value: " << this->myFloat2 << std::endl;
         }
-        std::cout << "U's myFloat2 updated value: " << this->myFloat2 << std::endl;
+        
         return this->myFloat2 * this->myFloat1;
     }
 };
@@ -108,17 +115,21 @@ struct MySecondStruct
 {
     static float floatMethod1(U* that, float* updatedValue )        //10
     {
-        std::cout << "U's myFloat1 value: " << that->myFloat1 << std::endl;
-        that->myFloat1 = *updatedValue;
-        std::cout << "U's myFloat1 updated value: " << that->myFloat1 << std::endl;
-        while( std::abs(that->myFloat2 - that->myFloat1) > 0.001f )
+        if(that != nullptr && updatedValue != nullptr)
         {
-            /*
-             write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
-             */
-            that->myFloat2 -= 1.0f;
+            std::cout << "U's myFloat1 value: " << that->myFloat1 << std::endl;
+            that->myFloat1 = *updatedValue;
+            std::cout << "U's myFloat1 updated value: " << that->myFloat1 << std::endl;
+            while( std::abs(that->myFloat2 - that->myFloat1) > 0.001f )
+            {
+                /*
+                write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+                */
+                that->myFloat2 -= 1.0f;
+            }
+            std::cout << "U's myFloat2 updated value: " << that->myFloat2 << std::endl;
         }
-        std::cout << "U's myFloat2 updated value: " << that->myFloat2 << std::endl;
+        
         return that->myFloat2 * that->myFloat1;
     }
 };
@@ -129,8 +140,12 @@ int main()
     T num2(2 , "num2");                                             //6
     
     MyFirstStruct f;                                            //7
-    auto* smaller = f.compare(&num1 , &num2);                              //8
-    std::cout << "the smaller one is << " << (*smaller).name << std::endl; //9
+    auto* smaller = f.compare(&num1 , &num2);   
+    
+    if(smaller != nullptr)
+    {                             //8
+        std::cout << "the smaller one is << " << (*smaller).name << std::endl; //9
+    }      
     
     U float1;
     float updatedValue = 5.f;
