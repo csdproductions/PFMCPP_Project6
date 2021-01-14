@@ -58,8 +58,7 @@ struct U
             this->myFloat2 -= 1.0f;
         }
         std::cout << "U's myFloat2 updated value: " << this->myFloat2 << std::endl;
-        
-        
+   
         return this->myFloat2 * this->myFloat1;
     }
 };
@@ -79,8 +78,7 @@ struct MySecondStruct
             that.myFloat2 -= 1.0f;
         }
         std::cout << "U's myFloat2 updated value: " << that.myFloat2 << std::endl;
-        
-        
+      
         return that.myFloat2 * that.myFloat1;
     }
 };
@@ -100,8 +98,7 @@ int main()
     
     U float1;
     float updatedValue = 5.f;
-    std::cout << "[static func] float1's multiplied values: " << MySecondStruct::floatMethod1(float1, updatedValue) << std::endl;                  //11
-    
+    std::cout << "[static func] float1's multiplied values: " << MySecondStruct::floatMethod1(float1, updatedValue) << std::endl;                   
     U myLittleU;
     std::cout << "[member func] myLittleU's multiplied values: " << myLittleU.floatMethod2(updatedValue) << std::endl;
 }
