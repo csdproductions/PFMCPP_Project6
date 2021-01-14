@@ -33,13 +33,10 @@ struct T
 
 struct MyFirstStruct                                //4
 {
-    T* compare(T* a, T* b) //5
+    T* compare(T& a, T& b) //5
     {
-        if(a != nullptr && b != nullptr)
-        {
-            if( a->value < b->value ) return a;
-            if( a->value > b->value ) return b;
-        }
+        if( a.value < b.value ) return &a;
+        if( a.value > b.value ) return &b;   
         return nullptr;
     }
 };
@@ -47,22 +44,21 @@ struct MyFirstStruct                                //4
 struct U
 {
     float myFloat1 { 8.0f }, myFloat2 { 6.0f };
-    float floatMethod2(float* updatedValue)      //12
+    float floatMethod2(const float& updatedValue)      //12
     {
-        if(updatedValue != nullptr)
+
+        std::cout << "U's myFloat1 value: " << this->myFloat1 << std::endl;
+        this->myFloat1 = updatedValue;
+        std::cout << "U's myFloat1 updated value: " << this->myFloat1 << std::endl;
+        while( std::abs(this->myFloat2 - this->myFloat1) > 0.001f )
         {
-            std::cout << "U's myFloat1 value: " << this->myFloat1 << std::endl;
-            this->myFloat1 = *updatedValue;
-            std::cout << "U's myFloat1 updated value: " << this->myFloat1 << std::endl;
-            while( std::abs(this->myFloat2 - this->myFloat1) > 0.001f )
-            {
-                /*
-                write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
-                */
-                this->myFloat2 -= 1.0f;
-            }
-            std::cout << "U's myFloat2 updated value: " << this->myFloat2 << std::endl;
+            /*
+            write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+            */
+            this->myFloat2 -= 1.0f;
         }
+        std::cout << "U's myFloat2 updated value: " << this->myFloat2 << std::endl;
+        
         
         return this->myFloat2 * this->myFloat1;
     }
@@ -70,24 +66,22 @@ struct U
 
 struct MySecondStruct
 {
-    static float floatMethod1(U* that, float* updatedValue )        //10
-    {
-        if(that != nullptr && updatedValue != nullptr)
+    static float floatMethod1(U& that, const float& updatedValue )        //10
+    { 
+        std::cout << "U's myFloat1 value: " << that.myFloat1 << std::endl;
+        that.myFloat1 = updatedValue;
+        std::cout << "U's myFloat1 updated value: " << that.myFloat1 << std::endl;
+        while( std::abs(that.myFloat2 - that.myFloat1) > 0.001f )
         {
-            std::cout << "U's myFloat1 value: " << that->myFloat1 << std::endl;
-            that->myFloat1 = *updatedValue;
-            std::cout << "U's myFloat1 updated value: " << that->myFloat1 << std::endl;
-            while( std::abs(that->myFloat2 - that->myFloat1) > 0.001f )
-            {
-                /*
-                write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
-                */
-                that->myFloat2 -= 1.0f;
-            }
-            std::cout << "U's myFloat2 updated value: " << that->myFloat2 << std::endl;
+            /*
+            write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+            */
+            that.myFloat2 -= 1.0f;
         }
+        std::cout << "U's myFloat2 updated value: " << that.myFloat2 << std::endl;
         
-        return that->myFloat2 * that->myFloat1;
+        
+        return that.myFloat2 * that.myFloat1;
     }
 };
         
@@ -97,19 +91,19 @@ int main()
     T num2(2 , "num2");                                             //6
     
     MyFirstStruct f;                                            //7
-    auto* smaller = f.compare(&num1 , &num2);   
+    auto* smaller = f.compare(num1 , num2);   
     
     if(smaller != nullptr)
     {                             //8
-        std::cout << "the smaller one is << " << (*smaller).name << std::endl; //9
+        std::cout << "the smaller one is << " << smaller->name << std::endl; //9
     }      
     
     U float1;
     float updatedValue = 5.f;
-    std::cout << "[static func] float1's multiplied values: " << MySecondStruct::floatMethod1(&float1, &updatedValue) << std::endl;                  //11
+    std::cout << "[static func] float1's multiplied values: " << MySecondStruct::floatMethod1(float1, updatedValue) << std::endl;                  //11
     
     U myLittleU;
-    std::cout << "[member func] myLittleU's multiplied values: " << myLittleU.floatMethod2(&updatedValue) << std::endl;
+    std::cout << "[member func] myLittleU's multiplied values: " << myLittleU.floatMethod2(updatedValue) << std::endl;
 }
 
         
